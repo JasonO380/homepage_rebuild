@@ -8,12 +8,19 @@
     text-align: center;
 }
 
-.fitness_data_sphere {
-    background: #2a006e;
-    border: 2px solid black;
-    border-radius: 20px;
+.fitness_data_container {
     text-align: center;
-    width: 20rem;
+    width: 100%;
+}
+
+.emoji {
+    font-size: 60px;
+    margin: auto;
+    border-radius: 10px;
+    box-shadow: 12px 12px 2px 1px black;
+    width: 50%;
+    text-align: end;
+    background: linear-gradient(45deg, #3196e8, transparent);
 }
 
 .pic_demo_header {
@@ -34,5 +41,17 @@
 @media screen and (max-width: 575px) {
     .pic {
         height: 8rem;
+    }
+}
+
+@media screen and (max-width: 625px) {
+    .demo_wrapper {
+        flex-direction: column;
+    }
+    .fitness_tracker_container {
+        width: 100%;
+    }
+    .fitness_data_container {
+        width: 100%;
     }
 }

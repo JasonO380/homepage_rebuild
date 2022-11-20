@@ -1,6 +1,6 @@
 const trainingData = [
     {
-        title: "Methodology",
+        title: "Training",
         methods: [
             "Build a strong base through mobility work during warm ups",
             "Build a strong technical foundation with the basic lifts SQUAT DEADLIFT PULLING and PRESSING movements",

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import macroentry from "../Images/macroentry.jpeg";
 import macroview from "../Images/macroview.jpeg";
 import workoutentry from "../Images/workoutentry.jpeg";
@@ -14,6 +14,22 @@ const FitnessTrackerPreview = () => {
     const picOptions = [macroentry, macroview, workoutentry, workoutview];
     let newPic = picOptions[count];
     const [pic, setPic] = useState(newPic);
+    const animation = {
+        offscreen:{x: 1000},
+        onscreen:{x:0,
+        transition:{type:"spring",
+        bounce:.5,
+        duration:.8}}
+    }
+    const emojiAnimation = {
+        offscreen:{scale:0, x:-500},
+        onscreen:{x:0, scale:[.2, .5 , .8, 1],
+        rotate: [0, 90, -90,90,0],
+        transition:{type:"spring",
+        bounce:.65,
+        duration:.8}}
+    }
+
     const rotateNext = () => {
         setRotate(true);
         if (count < picOptions.length - 1) {
@@ -28,13 +44,22 @@ const FitnessTrackerPreview = () => {
         }
     };
     return (
-        <div className="demo_wrapper">
+        <div
+        className="demo_wrapper">
             <div className="fitness_tracker_container">
-                {info.map((d) => {
+                {info.map((d, index) => {
+                    const img = d.emoji
                     return (
-                        <div className="fitness_data_sphere">
-                            <h4>{d.info}</h4>
-                        </div>
+                        <AnimatePresence>
+                        <motion.div
+                        initial={"offscreen"}
+                        whileInView={"onscreen"}
+                        viewport={{once:false, amount:.6}} 
+                        className="fitness_data_container">
+                            <motion.p className="emoji"  key={index} variants={emojiAnimation}>{img}</motion.p>
+                            <motion.p >{d.info}</motion.p>
+                        </motion.div>
+                        </AnimatePresence>
                     );
                 })}
             </div>

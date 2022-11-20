@@ -3,7 +3,7 @@ import aboutMeData from "./aboutme_data";
 import AboutMeOutput from "./aboutme_output";
 import trainingData from "./training_data";
 import { MdArrowDropDownCircle } from "react-icons/md";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import "./aboutme.css";
 
 let items;
@@ -14,6 +14,13 @@ const AboutMe = () => {
     const [listItems, setListItems] = useState();
     const [isOpen, setIsOpen] = useState(false);
     const [isRotate, setIsRotate] = useState(false);
+    const variants = {
+        offscreen:{y: -10},
+        onscreen:{y:0,
+        transition:{type:"spring",
+        bounce:.5,
+        duration:.8}}
+    }
     const accordionToggle = (event) => {
         data = event.target.id;
         console.log(data);
@@ -23,7 +30,7 @@ const AboutMe = () => {
                 setListItems(items);
             });
         }
-        if (data === "Methodology") {
+        if (data === "Training") {
             trainingData.map((data) => {
                 items = data.methods;
                 setListItems(items);
@@ -31,9 +38,8 @@ const AboutMe = () => {
         }
         if (!isOpen) {
             setIsOpen(true);
-            // setIsRotate(true);
         } else {
-            accordionFlip()
+            accordionFlip();
         }
         console.log(isOpen);
     };
@@ -81,30 +87,32 @@ const AboutMe = () => {
                 </div>
             </div>
             <AnimatePresence mode="wait">
-            <motion.div
-                key={items}
-                initial={{
-                    height: 0,
-                    opacity: 0,
-                }}
-                animate={{
-                    rotateY: 360,
-                    opacity: 1,
-                    margin: "auto",
-                    height: "auto",
-                    transition: {
-                        staggerChildren:.01,
-                        duration: 0.45,
-                    },
-                }}
-                exit={{
-                    height: 0,
-                    opacity: 0,
-                }}
-                className="output_wrapper"
-            >
-                {isOpen && <AboutMeOutput items={items} />}
-            </motion.div>
+                <motion.div
+                    key={items}
+                    initial={{
+                        scale: 0,
+                        opacity: 0,
+                    }}
+                    animate={{
+                        rotateY: [0, 180, -180,180,0],
+                        opacity: 1,
+                        margin: "auto",
+                        scale: [.8 ,1, .8, 1, .8, 1],
+                        transition: {
+                            duration: 0.75,
+                            type:"spring",
+                            bounce: .5,
+                            staggerChildren:.5
+                        },
+                    }}
+                    exit={{
+                        scale: 0,
+                        opacity: 0,
+                    }}
+                    className="output_wrapper"
+                >
+                    {isOpen && <AboutMeOutput animate={variants} items={items} />}
+                </motion.div>
             </AnimatePresence>
         </React.Fragment>
     );

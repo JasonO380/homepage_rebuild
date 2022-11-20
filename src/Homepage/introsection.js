@@ -8,3 +8,5 @@ const IntroSection = () => {
 }
 
 export default IntroSection;
+
+//Going to add lifting videos here eventually 🏋🏽‍♂️//

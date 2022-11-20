@@ -4,6 +4,7 @@ import NavBar from "../Nav/nav";
 import IntroSection from "./introsection";
 import LogoProfilePic from "./logo_profile_pic";
 import AboutMe from "./aboutme";
+import Services from "./services";
 import FitnessTrackerPreview from "./fitness_tracker_preview";
 
 const HomePage = () => {
@@ -17,6 +18,7 @@ const HomePage = () => {
             <LogoProfilePic />
             <AboutMe />
             <FitnessTrackerPreview />
+            <Services />
         </React.Fragment>
     );
 };

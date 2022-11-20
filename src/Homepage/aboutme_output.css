@@ -1,8 +1,15 @@
 .output_container {
-    width: 90%;
+    width: fit-content;
     margin-left: auto;
     margin-right: auto;
     border: 5px solid #f8df00;
+    background: black;
     border-radius: 20px;
     padding: 7px;
+}
+
+@media screen and (max-width: 875px) {
+    .output_container {
+        width: 90%;
+    }
 }

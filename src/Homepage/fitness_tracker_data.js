@@ -1,13 +1,16 @@
 const info = [
     {
-        info: "Easy to use"
+        emoji:"🥩",
+        info: "Track your eating habits"
     },
     {
-        info: "Track your workouts and nutrient info"
+        emoji:"🏋🏽‍♂️",
+        info: "Track your weightlifting routine"
     },
     {
+        emoji:"📝",
         info: "Register to start tracking your progress"
-    },
+    }
 ]
 
 export default info;
