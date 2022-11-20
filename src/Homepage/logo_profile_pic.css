@@ -1,0 +1,38 @@
+.logo_profile_container {
+    display: flex;
+}
+
+.card_flip_container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 50%;
+}
+
+.profile_logo_container {
+    width: 50%;
+}
+
+.profile_img {
+    display: flex;
+    height: 20rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.logo_img {
+    display: flex;
+    height: 20rem;
+    border-radius: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media screen and (max-width: 575px){
+    .profile_img {
+        height: 10rem;
+    }
+    .logo_img {
+        height: 10rem;
+    }
+}

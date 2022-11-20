@@ -1,0 +1,17 @@
+.about_me_wrapper {
+    display: flex;
+}
+
+.about_me_container {
+    width: 50%;
+}
+
+.action_button {
+    background: #2a006e;
+    border: 2px solid black;
+    border-radius: 20px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 7px;
+}

@@ -1,0 +1,8 @@
+.output_container {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    border: 5px solid #f8df00;
+    border-radius: 20px;
+    padding: 7px;
+}
