@@ -1,0 +1,36 @@
+.login_wrapper {
+    display: flex;
+    height: 100vh;
+    background: linear-gradient(#2a006e, #2a2929 65%);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    background-color: black;
+    width: fit-content;
+    height: fit-content;
+    padding: 10px;
+    border-radius: 20px;
+    margin:auto;
+    z-index: 999;
+}
+
+.login_register_input {
+    margin-top: 20px;
+    border-radius: 7px;
+}
+
+.login_register_label {
+    margin-top: 20px;
+}
+
+.login_register_button {
+    margin-top: 15px;
+    width: fit-content;
+    border-radius: 7px;
+    background-color: #ff1f06;
+    color: white;
+    padding: 4px;
+}

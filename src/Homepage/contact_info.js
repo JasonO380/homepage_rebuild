@@ -6,12 +6,12 @@ import "./contact_info.css";
 
 const ContactInfo = () => {
     return (
-        <div class="contact_icons_container">
-            <a class="contact_icons" href="mailto:JMOllada@gmail.com">
+        <div className="contact_icons_container">
+            <a className="contact_icons" href="mailto:JMOllada@gmail.com">
                     <MdOutlineEmail />
                 </a>
                 <a
-                    class="contact_icons" href="https://www.instagram.com/jasono380"
+                    className="contact_icons" href="https://www.instagram.com/jasono380"
                 >
                     <FaInstagram />
                 </a>

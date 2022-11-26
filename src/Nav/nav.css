@@ -22,6 +22,16 @@
     margin-left: 10px;
 }
 
+.nav_link {
+    background: #ff1f06;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid black;      
+    width: fit-content;
+    color: #fff;
+    text-decoration: none;
+}
+
 a {
     margin-right: 10px;
 }
@@ -36,12 +46,11 @@ a {
     .login_register_links {
         font-size: 6px;
     }
-    .nav_link {
+    /* .nav_link {
         background: #ff1f06;
         padding: 5px;
         border-radius: 5px;
-        border: 1px solid black;
-        
+        border: 1px solid black;      
         width: fit-content;
-    }
+    } */
 }

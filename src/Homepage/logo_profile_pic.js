@@ -6,14 +6,14 @@ import "./logo_profile_pic.css";
 const LogoProfilePic = () => {
     return (
         <React.Fragment>
-        <div className="logo_profile_container">
-            <div className="profile_logo_container">
-                <img className="profile_img" src={profile_pic} />
+            <div className="logo_profile_container">
+                <div className="profile_logo_container">
+                    <img className="profile_img" src={profile_pic} />
+                </div>
+                <div className="profile_logo_container">
+                    <img className="logo_img" src={logo} />
+                </div>
             </div>
-            <div className="profile_logo_container">
-                <img className="logo_img" src={logo} />
-            </div>
-        </div>
         </React.Fragment>
     );
 };

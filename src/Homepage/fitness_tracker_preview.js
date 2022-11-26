@@ -15,20 +15,21 @@ const FitnessTrackerPreview = () => {
     let newPic = picOptions[count];
     const [pic, setPic] = useState(newPic);
     const animation = {
-        offscreen:{x: 1000},
-        onscreen:{x:0,
-        transition:{type:"spring",
-        bounce:.5,
-        duration:.8}}
-    }
+        offscreen: { x: -500 },
+        onscreen: {
+            x: 0,
+            transition: { type: "spring", bounce: 0.5, duration: 0.8 },
+        },
+    };
     const emojiAnimation = {
-        offscreen:{scale:0, x:-500},
-        onscreen:{x:0, scale:[.2, .5 , .8, 1],
-        rotate: [0, 90, -90,90,0],
-        transition:{type:"spring",
-        bounce:.65,
-        duration:.8}}
-    }
+        offscreen: { scale: 0, x: -500 },
+        onscreen: {
+            x: 0,
+            scale: [0.2, 0.5, 0.8, 1],
+            rotate: [0, 90, -45, 45, 0],
+            transition: { type: "spring", bounce: 0.65, duration: 1.3 },
+        },
+    };
 
     const rotateNext = () => {
         setRotate(true);
@@ -44,33 +45,43 @@ const FitnessTrackerPreview = () => {
         }
     };
     return (
-        <div
-        className="demo_wrapper">
+        <div className="demo_wrapper">
             <div className="fitness_tracker_container">
                 {info.map((d, index) => {
-                    const img = d.emoji
+                    const img = d.emoji;
                     return (
                         <AnimatePresence>
-                        <motion.div
-                        initial={"offscreen"}
-                        whileInView={"onscreen"}
-                        viewport={{once:false, amount:.6}} 
-                        className="fitness_data_container">
-                            <motion.p className="emoji"  key={index} variants={emojiAnimation}>{img}</motion.p>
-                            <motion.p >{d.info}</motion.p>
-                        </motion.div>
+                            <motion.div
+                                initial={"offscreen"}
+                                whileInView={"onscreen"}
+                                viewport={{ once: false, amount: 0.6 }}
+                                className="fitness_data_container"
+                            >
+                                <motion.p
+                                    className="emoji"
+                                    key={index}
+                                    variants={emojiAnimation}
+                                >
+                                    {img}
+                                </motion.p>
+                                <motion.p variants={animation}>
+                                    {d.info}
+                                </motion.p>
+                            </motion.div>
                         </AnimatePresence>
                     );
                 })}
             </div>
-            <div className="fitness_tracker_container">
-                <motion.h4
-                    whileTap={{ scale: 0.8 }}
-                    onClick={rotateNext}
-                    className="pic_demo_header"
-                >
-                    Preview
-                </motion.h4>
+            <div className="fitness_flip-pic_container">
+                <div className="flip-pic_button_container">
+                    <motion.h4
+                        whileTap={{ scale: 0.8 }}
+                        onClick={rotateNext}
+                        className="pic_demo_header"
+                    >
+                        Preview
+                    </motion.h4>
+                </div>
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={pic}

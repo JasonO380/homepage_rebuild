@@ -4,17 +4,20 @@ import "./aboutme_output.css";
 
 const AboutMeOutput = (props) => {
     console.log(props.items);
-    console.log(props.animate)
+    console.log(props.animate);
     const animate = props.animate;
     return (
-        <motion.div
-            className="output_container"
-        >
+        <motion.div className="output_container">
             {props.items.map((data) => {
-                return <motion.p
-                initial="offscreen"
-                animate="onscreen"
-                variants={animate}>{data}</motion.p>;
+                return (
+                    <motion.p
+                        initial="offscreen"
+                        animate="onscreen"
+                        variants={animate}
+                    >
+                        {data}
+                    </motion.p>
+                );
             })}
         </motion.div>
     );

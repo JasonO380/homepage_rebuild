@@ -20,22 +20,37 @@
     box-shadow: 12px 12px 2px 1px black;
     width: 50%;
     text-align: end;
-    background: linear-gradient(45deg, #3196e8, transparent);
+    background: linear-gradient(45deg, #3196e8, #1b0124);
 }
 
 .pic_demo_header {
     background: #2a006e;
-    padding: 15px;
-    border-radius: 20px;
+    padding: 5px;
+    border-radius: 10px;
     border: 2px solid black;
     margin: auto;
     width: fit-content;
 }
 
+.fitness_flip-pic_container {
+    width: 40%;
+    margin: auto;
+    border-radius: 10px;
+    background: linear-gradient(45deg, #1b0124, 70%, #3196e8);
+}
+
+.flip-pic_button_container {
+    margin: 20px 0;
+}
+
+.demo_pic_holder {
+    text-align: center;
+}
+
 .pic {
     height: 20rem;
-    border: 5px solid #049c01;
-    border-radius: 20px;
+    box-shadow: 12px 12px 2px 1px black;
+    border-radius: 10px;
 }
 
 @media screen and (max-width: 575px) {
@@ -50,6 +65,9 @@
     }
     .fitness_tracker_container {
         width: 100%;
+    }
+    .fitness_flip-pic_container {
+        width: 60%;
     }
     .fitness_data_container {
         width: 100%;

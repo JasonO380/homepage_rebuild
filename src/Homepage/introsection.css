@@ -3,3 +3,16 @@ h3 {
     font-style: italic;
     text-align: center;
 }
+
+.carousel_container {
+    display: flex;
+    margin: auto;
+}
+
+.carousel_button_container {
+    margin: auto;
+}
+
+.carousel_button {
+    pointer-events: none;
+}
