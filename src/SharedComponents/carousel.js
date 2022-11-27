@@ -12,49 +12,42 @@ const Carousel = (props) => {
     console.log(direction);
     const [increase, setIncrease] = useState(false);
 
-    useEffect(()=>{
-        if(direction === "plus"){
-            setIncrease(true)
+    useEffect(() => {
+        if (direction === "plus") {
+            setIncrease(true);
         } else {
-            setIncrease(false)
+            setIncrease(false);
         }
-    },[direction]);
+    }, [direction]);
     const animation = {
         offscreen: { x: increase ? -500 : 500 },
         onscreen: {
             x: 0,
-            transition: { type: "spring", bounce: 0.65, duration: 1.8 },
+            transition: { type: "spring", bounce: 0.65, duration: 0.55 },
         },
         exit: { scale: 0 },
     };
     return (
-        <div
-            className="carousel_wrapper"
-            // style={{ background: color }}
-        >
+        <div className="carousel_wrapper">
             <AnimatePresence mode="wait">
                 <motion.div
-                initial={"offscreen"}
-                animate={"onscreen"}
-                exit={"exit"}
-                key={pic} 
-                className="carousel_container_output">
-                    <motion.div
-                        // initial={"offscreen"}
-                        // animate={"onscreen"}
-                        // exit={"exit"}
-                        // key={pic}
-                        className="carousel_img_container"
-                    >
+                    initial={"offscreen"}
+                    animate={"onscreen"}
+                    exit={"exit"}
+                    key={pic}
+                    className="carousel_container_output"
+                >
+                    <div className="carousel_img_container">
                         <motion.img
                             variants={animation}
                             className="carousel_img"
                             src={pic}
                         />
-                    </motion.div>
+                    </div>
                     <motion.div
-                    variants={animation} 
-                    className="carousel_data_container">
+                        variants={animation}
+                        className="carousel_data_container"
+                    >
                         <p>{data}</p>
                     </motion.div>
                 </motion.div>
