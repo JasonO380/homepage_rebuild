@@ -1,10 +1,14 @@
-import React, { useState, useReducer } from "react";
+import React, { useState, useReducer, useContext } from "react";
+import FormNav from "../Nav/form-nav";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaUser } from "react-icons/fa";
+import { LoginRegisterContext } from "./login-register-context";
+import { formStyle } from "../CSS/variables/form_style";
 import "./authenticate.css";
 
 const Login = () => {
+    let accessGranted;
     const inputReducer = (state, action) => {
         switch (action.type) {
             case "INPUT_CHANGE":
@@ -22,7 +26,7 @@ const Login = () => {
         email: "",
         password: "",
     });
-    // const loginRegister = useContext(LoginRegisterContext);
+    const loginRegister = useContext(LoginRegisterContext);
 
     const changeHandler = (event) => {
         const inputValue = event.target.value;
@@ -36,21 +40,55 @@ const Login = () => {
         });
     };
 
-    const loginUser = (event) => {
-        event.preventDefault()
+    const loginUser = async (event) => {
+        event.preventDefault();
         const inputName = event.target.name;
         const inputValue = event.target.value;
         console.log(inputName, inputValue, inputState);
+        try {
+            const response = await fetch(
+                "https://barbell-factor.onrender.com/api/users/login",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        email: inputState.email,
+                        password: inputState.password,
+                    }),
+                }
+            );
+            const responseData = await response.json();
+            accessGranted = responseData.message;
+            console.log(responseData.message);
+            loginRegister.login(responseData.userID, responseData.token);
+        } catch (err) {
+            console.log(err);
+        }
+
+        if (accessGranted !== "Success") {
+            setLogin(false);
+        } else {
+            navigate("/dashboard");
+        }
     };
 
     return (
         <motion.div
-        initial={{y: 500}}
-        animate={{y: 0, transition: { type: "spring", bounce: 0.65, duration: .8 }}}
-        exit={{x: window.innerWidth, transition: {duration: .35}}} 
-        className="login_wrapper">
-            <form onSubmit={loginUser}>
-                <h1><FaUser icon="fa-duotone fa-user" /></h1>
+            initial={{ y: 500 }}
+            animate={{
+                y: 0,
+                transition: { type: "spring", bounce: 0.65, duration: 0.8 },
+            }}
+            exit={{ x: window.innerWidth, transition: { duration: 0.35 } }}
+            className="login_register_wrapper"
+        >
+            <FormNav />
+            <form style={formStyle} onSubmit={loginUser}>
+                <h1>
+                    <FaUser icon="fa-duotone fa-user" />
+                </h1>
                 <label className="login_register_label">Email</label>
                 <input
                     className="login_register_input"
@@ -68,9 +106,12 @@ const Login = () => {
                     onChange={changeHandler}
                 />
                 <button
-                className="login_register_button"
-                onClick={loginUser}
-                type="submit">LOGIN</button>
+                    className="login_register_button"
+                    onClick={loginUser}
+                    type="submit"
+                >
+                    LOGIN
+                </button>
             </form>
         </motion.div>
     );

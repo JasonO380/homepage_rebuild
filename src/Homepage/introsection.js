@@ -6,7 +6,9 @@ import me from "../Images/snatch_drop.jpeg";
 import KBandDB from "../Images/db_and_kb.jpeg";
 import jerkBlocks from "../Images/jerk_blocks.jpeg";
 import mary from "../Images/Mary_lift.jpeg";
+import { italics } from "../CSS/variables/fonts";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { motion } from "framer-motion";
 import "./introsection.css";
 
 const IntroSection = () => {
@@ -44,16 +46,28 @@ const IntroSection = () => {
     return (
         <React.Fragment>
             <div>
-                <h3>GET LEAN, STRONG AND MOBILE</h3>
+                <h3 style={italics} >GET LEAN, STRONG AND MOBILE</h3>
             </div>
             <div>
                 <div className="carousel_container">
                     <div className="carousel_button_container">
-                        <button onClick={nextSlide} name="minus"><i className="carousel_button"><FaChevronLeft /></i></button>
+                        <motion.button 
+                        onClick={nextSlide}
+                        whileTap={{ scale: 0.8 }}
+                        className="chevron_style" 
+                        name="minus">
+                        <i className="carousel_button" onClick={nextSlide}><FaChevronLeft size={22} /></i>
+                        </motion.button>
                     </div>
                     <Carousel direction={carouselCount} info={newSlide} color={color} pic={newPic} />
                     <div className="carousel_button_container">
-                        <button onClick={nextSlide} name="plus"><i className="carousel_button"><FaChevronRight /></i></button>
+                        <motion.button 
+                        onClick={nextSlide} 
+                        name="plus"
+                        whileTap={{ scale: 0.8 }} 
+                        className="chevron_style">
+                        <i className="carousel_button" onClick={nextSlide}><FaChevronRight size={22} /></i>
+                        </motion.button>
                     </div>
                 </div>
             </div>

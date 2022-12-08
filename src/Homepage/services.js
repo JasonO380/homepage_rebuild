@@ -1,6 +1,7 @@
 import React from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import serviceData from "./service_data";
+import { italics } from "../CSS/variables/fonts";
 import "./services.css";
 
 const Services = () => {
@@ -25,10 +26,10 @@ const Services = () => {
                             className="services_container"
                             viewport={{ once: false, amount: 1 }}
                         >
-                            <motion.h3 variants={animation}>
+                            <motion.h3 style={italics} variants={animation}>
                                 {data.title}
                             </motion.h3>
-                            <motion.p variants={animation}>
+                            <motion.p style={italics} variants={animation}>
                                 {data.description}
                             </motion.p>
                         </motion.div>

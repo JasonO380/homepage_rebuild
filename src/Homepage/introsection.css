@@ -1,8 +1,8 @@
-h3 {
+/* h3 {
     color: white;
     font-style: italic;
     text-align: center;
-}
+} */
 
 .carousel_container {
     display: flex;
@@ -15,4 +15,10 @@ h3 {
 
 .carousel_button {
     pointer-events: none;
+}
+
+.chevron_style {
+    background: none;
+    border: none;
+    color: #fff
 }

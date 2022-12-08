@@ -1,0 +1,11 @@
+.update_container {
+    margin-top: 50px;
+    width: 50%;
+}
+
+@media screen and (max-width: 420px){
+    .update_container {
+        width: 100%;
+        /* flex-direction: column; */
+    }
+}

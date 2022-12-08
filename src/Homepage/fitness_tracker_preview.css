@@ -35,6 +35,7 @@
 .fitness_flip-pic_container {
     width: 40%;
     margin: auto;
+    text-align: center;
     border-radius: 10px;
     background: linear-gradient(45deg, #1b0124, 70%, #3196e8);
 }

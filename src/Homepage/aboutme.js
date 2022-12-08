@@ -3,7 +3,8 @@ import aboutMeData from "./aboutme_data";
 import AboutMeOutput from "./aboutme_output";
 import trainingData from "./training_data";
 import { MdArrowDropDownCircle } from "react-icons/md";
-import { motion, AnimatePresence, Variants } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import buttonStyle from "../CSS/variables/button_style";
 import "./aboutme.css";
 
 let items;
@@ -66,24 +67,24 @@ const AboutMe = () => {
         <React.Fragment>
             <div className="about_me_wrapper">
                 <div className="about_me_container">
-                    <motion.h3
+                    <motion.button
                         id={bioTitle}
                         onClick={accordionToggle}
                         whileTap={{ scale: 0.8 }}
-                        className="action_button"
+                        style={buttonStyle}
                     >
-                        {bioTitle} <MdArrowDropDownCircle />
-                    </motion.h3>
+                        {bioTitle} 
+                    </motion.button>
                 </div>
                 <div className="about_me_container">
-                    <motion.h3
+                    <motion.button
                         id={trainingTitle}
                         onClick={accordionToggle}
                         whileTap={{ scale: 0.8 }}
-                        className="action_button"
+                        style={buttonStyle}
                     >
-                        {trainingTitle} <MdArrowDropDownCircle />
-                    </motion.h3>
+                        {trainingTitle} 
+                    </motion.button>
                 </div>
             </div>
             <AnimatePresence mode="wait">

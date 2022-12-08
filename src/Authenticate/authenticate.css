@@ -1,20 +1,8 @@
-.login_wrapper {
-    display: flex;
-    height: 100vh;
-    background: linear-gradient(#2a006e, #2a2929 65%);
-}
-
-form {
+.login_register_wrapper {
     display: flex;
     flex-direction: column;
-    text-align: center;
-    background-color: black;
-    width: fit-content;
-    height: fit-content;
-    padding: 10px;
-    border-radius: 20px;
-    margin:auto;
-    z-index: 999;
+    height: 100vh;
+    background: linear-gradient(#2a006e, #2a2929 65%);
 }
 
 .login_register_input {

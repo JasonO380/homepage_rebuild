@@ -1,0 +1,11 @@
+.macros_edit_output_wrapper {
+    width: 100%;
+    display: flex;
+    background: linear-gradient(#2a006e, #2a2929 40%);
+}
+
+@media screen and (max-width: 370px){
+    .macros_edit_output_wrapper {
+        flex-direction: column;
+    }
+}

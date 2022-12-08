@@ -1,7 +1,10 @@
-import React, { useState, useReducer } from "react";
+import React, { useState, useReducer, useContext } from "react";
+import FormNav from "../Nav/form-nav";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaUser } from "react-icons/fa";
+import { LoginRegisterContext } from "./login-register-context";
+import { formStyle } from "../CSS/variables/form_style";
 import "./authenticate.css";
 
 const Register = () => {
@@ -19,11 +22,11 @@ const Register = () => {
     const navigate = useNavigate();
     const [login, setLogin] = useState(true);
     const [inputState, dispatch] = useReducer(inputReducer, {
-        username:"",
+        username: "",
         email: "",
         password: "",
     });
-    // const loginRegister = useContext(LoginRegisterContext);
+    const loginRegister = useContext(LoginRegisterContext);
 
     const changeHandler = (event) => {
         const inputValue = event.target.value;
@@ -37,21 +40,52 @@ const Register = () => {
         });
     };
 
-    const registerUser = (event) => {
-        event.preventDefault()
+    const registerUser = async (event) => {
+        event.preventDefault();
         const inputName = event.target.name;
         const inputValue = event.target.value;
         console.log(inputName, inputValue, inputState);
+        try {
+            const response = await fetch(
+                "https://barbell-factor.herokuapp.com/api/users/signup",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        username: inputState.username,
+                        email: inputState.email,
+                        password: inputState.password,
+                    }),
+                }
+            );
+            const responseData = await response.json();
+            console.log(responseData);
+            loginRegister.login(responseData.userID, responseData.token);
+            navigate("/dashboard");
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     return (
         <motion.div
-        initial={{y: 500}}
-        animate={{y: 0, transition: { type: "spring", bounce: 0.65, duration: .8 }}}
-        exit={{x: window.innerWidth, transition: {duration: .35}}} 
-        className="login_wrapper">
-            <form onSubmit={registerUser}>
-                <h1><FaUser icon="fa-duotone fa-user" /></h1>
+            initial={{ y: 500 }}
+            animate={{
+                y: 0,
+                transition: { type: "spring", bounce: 0.65, duration: 0.8 },
+            }}
+            exit={{ x: window.innerWidth, transition: { duration: 0.35 } }}
+            className="login_register_wrapper"
+        >
+            <FormNav />
+            <form
+            style={formStyle} 
+            onSubmit={registerUser}>
+                <h1>
+                    <FaUser icon="fa-duotone fa-user" />
+                </h1>
                 <label className="login_register_label">User Name</label>
                 <input
                     className="login_register_input"
@@ -77,9 +111,12 @@ const Register = () => {
                     onChange={changeHandler}
                 />
                 <button
-                className="login_register_button"
-                onClick={registerUser}
-                type="submit">REGISTER</button>
+                    className="login_register_button"
+                    onClick={registerUser}
+                    type="submit"
+                >
+                    REGISTER
+                </button>
             </form>
         </motion.div>
     );

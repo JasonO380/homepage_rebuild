@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence, Variants } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import macroentry from "../Images/macroentry.jpeg";
 import macroview from "../Images/macroview.jpeg";
 import workoutentry from "../Images/workoutentry.jpeg";
 import workoutview from "../Images/workoutview.jpeg";
 import info from "./fitness_tracker_data";
+import buttonStyle from "../CSS/variables/button_style";
 
 import "./fitness_tracker_preview.css";
 
@@ -74,13 +75,14 @@ const FitnessTrackerPreview = () => {
             </div>
             <div className="fitness_flip-pic_container">
                 <div className="flip-pic_button_container">
-                    <motion.h4
+                    <motion.button
                         whileTap={{ scale: 0.8 }}
                         onClick={rotateNext}
-                        className="pic_demo_header"
+                        style={buttonStyle}
+                        // className="pic_demo_header"
                     >
                         Preview
-                    </motion.h4>
+                    </motion.button>
                 </div>
                 <AnimatePresence mode="wait">
                     <motion.div

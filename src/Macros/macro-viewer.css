@@ -1,0 +1,16 @@
+.macro_viewer_wrapper {
+    height: 100vh;
+    background: linear-gradient(#2a006e, #2a2929 75%);
+    display: flex;
+    flex-direction: column;
+}
+
+.doughnut_container {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+/* #f08441 orange */
+/* #2a006e blue */
