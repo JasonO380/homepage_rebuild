@@ -1,14 +1,17 @@
 import React, {useState, useEffect, useReducer, useContext, useRef, } from "react";
 import { motion } from "framer-motion";
 import { LoginRegisterContext } from "../Authenticate/login-register-context";
-import { formStyle, labelStyle, inputStyle, buttonStyle } from "../CSS/variables/form_style";
+import buttonStyle from "../CSS/variables/button_style";
+import { formStyle, labelStyle, inputStyle } from "../CSS/variables/form_style";
+import { FaDumbbell } from "react-icons/fa";
 
 const UpdateWorkouts = (props) => {
     const [formIsValid, setFormIsValid] = useState(true);
     const [showModal, setShowModal] = useState(true);
     const [isValid, setIsValid] = useState(true);
     const auth = useContext(LoginRegisterContext);
-    const update = [props.workoutitems];
+    console.log(props.updateItems)
+    const update = props.updateItems;
     console.log(update);
     if (update.length < 1) {
         props.allWorkoutsDeleted(true);
@@ -21,6 +24,33 @@ const UpdateWorkouts = (props) => {
         rounds: "",
         weight: "",
     });
+
+    const inputReducer = (state, action) => {
+        const dateEntry = new Date();
+        switch (action.type) {
+            case "INPUT_CHANGE":
+                return {
+                    ...state,
+                    [action.name]: action.value,
+                    athlete: "",
+                    year: dateEntry.getFullYear(),
+                    dayOfWeek: dateEntry.toLocaleString("default", {
+                        weekday: "long",
+                    }),
+                    month: dateEntry.toLocaleString("en-US", { month: "long" }),
+                    day: dateEntry.getDate(),
+                };
+            case "CLEAR_FORM":
+                return {
+                    movement: "",
+                    reps: "",
+                    rounds: "",
+                    weight: "",
+                };
+            default:
+                return state;
+        }
+    };
     
     useEffect(() => {
         document.addEventListener("click", handleClickOutsideDiv);
@@ -162,7 +192,14 @@ const UpdateWorkouts = (props) => {
                         onClick={postUpdate}
                         type="submit"
                     >
-                        POST
+                        EDIT
+                    </button>
+                    <button
+                        style={buttonStyle}
+                        onClick={deleteWorkout}
+                        type="submit"
+                    >
+                        DELETE
                     </button>
                     {!isValid && (
                         <div>

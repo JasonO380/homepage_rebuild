@@ -1,16 +1,15 @@
-import React, { useState, useReducer, UseContext } from "react";
-import FormNav from "../Nav/form-nav";
-import Footer from "../Footer/footer";
-import buttonStyle from "../CSS/variables/button_style";
-import {
-    formStyle,
-    formWrapper,
-    labelStyle,
-    inputStyle,
-} from "../CSS/variables/form_style";
-import { FaDumbbell } from "react-icons/fa";
+import React, { useState, useContext, useReducer } from "react";
+import { LoginRegisterContext } from "../Authenticate/login-register-context";
+import { formWrapper, formStyle, inputStyle, labelStyle } from "../CSS/variables/form_style";
 import { motion } from "framer-motion";
-const WorkoutForm = () => {
+import FormNav from "../Nav/form-nav";
+import buttonStyle from "../CSS/variables/button_style";
+import Footer from "../Footer/footer";
+import { FaDumbbell } from "react-icons/fa";
+
+
+const WorkoutForm = (props) => {
+    let id;
     const inputReducer = (state, action) => {
         const dateEntry = new Date();
         switch (action.type) {
@@ -18,7 +17,7 @@ const WorkoutForm = () => {
                 return {
                     ...state,
                     [action.name]: action.value,
-                    // athlete: id,
+                    athlete: id,
                     year: dateEntry.getFullYear(),
                     dayOfWeek: dateEntry.toLocaleString("default", {
                         weekday: "long",
@@ -37,11 +36,17 @@ const WorkoutForm = () => {
                 return state;
         }
     };
-    // const auth = useContext(LoginRegisterContext);
+    const auth = useContext(LoginRegisterContext);
     const [formIsValid, setFormIsValid] = useState(true);
     const [isValid, setIsValid] = useState(true);
-    // const navigate = useNavigate();
-    const [inputState, dispatch] = useReducer(inputReducer, {});
+    const [inputState, dispatch] = useReducer(inputReducer, {
+        movement: "",
+        reps: "",
+        rounds: "",
+        weight: "",
+        athlete: auth.userID,
+    });
+    id = auth.userID;
 
     const changeHandler = (event) => {
         const inputName = event.target.name;
@@ -54,21 +59,50 @@ const WorkoutForm = () => {
         });
     };
 
-    const postWorkout = (event) => {
+    const postWorkout = async (event) => {
+        id = auth.userID;
         event.preventDefault();
         console.log(inputState);
+        console.log(id)
         if (
             !inputState.movement ||
             !inputState.rounds ||
-            !inputState.reps ||
-            !inputState.reps
+            !inputState.reps 
         ) {
             setIsValid(false);
             return null;
         }
+        try {
+            const response = await fetch(
+                "https://barbell-factor.onrender.com/api/workouts",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: "Issuer " + auth.token,
+                    },
+                    body: JSON.stringify({
+                        movement: inputState.movement,
+                        rounds: inputState.rounds,
+                        reps: inputState.reps,
+                        weight: inputState.weight,
+                        dayOfWeek: inputState.dayOfWeek,
+                        month: inputState.month,
+                        day: inputState.day,
+                        year: inputState.year,
+                        athlete: id,
+                    }),
+                }
+            );
+            const responseData = await response.json();
+            console.log(responseData.session);
+            props.workoutFormItems(responseData.session);
+        } catch (err) {}
         dispatch({
             type: "CLEAR_FORM",
         });
+        setFormIsValid(true);
+        event.preventDefault();
     };
 
     return (
@@ -98,29 +132,30 @@ const WorkoutForm = () => {
                     <label style={labelStyle}>Rounds</label>
                     <input
                         style={inputStyle}
-                        name="Rounds"
+                        name="rounds"
                         value={inputState.rounds}
-                        placeholder="enter password"
+                        placeholder="enter rounds"
                         onChange={changeHandler}
                     />
                     <label style={labelStyle}>Reps</label>
                     <input
                         style={inputStyle}
-                        name="Reps"
+                        name="reps"
                         value={inputState.reps}
-                        placeholder="enter password"
+                        placeholder="enter reps"
                         onChange={changeHandler}
                     />
                     <label style={labelStyle}>Weight</label>
                     <input
                         style={inputStyle}
-                        name="Weight"
+                        name="weight"
                         value={inputState.weight}
                         placeholder="enter weight used"
                         onChange={changeHandler}
                     />
                     <button
                         style={buttonStyle}
+                        value={inputState.id}
                         onClick={postWorkout}
                         type="submit"
                     >
@@ -133,9 +168,9 @@ const WorkoutForm = () => {
                     )}
                 </form>
             </motion.div>
-            <Footer />
+            
         </React.Fragment>
-    );
-};
+    )
+}
 
 export default WorkoutForm;

@@ -4,39 +4,23 @@ import { LoginRegisterContext } from "../Authenticate/login-register-context";
 import ReactDOM from "react-dom";
 import { motion } from "framer-motion";
 
+
 let month;
 let foundDay;
 
 const WorkoutLogOutput = (props) => {
-    let workoutsForTheDay = [];
+    console.log(props.workoutItems);
     const [isUpdateMode, setIsUpdateMode] = useState(false);
     const auth = useContext(LoginRegisterContext);
-    console.log(noDuplicates);
-    workoutsForTheDay = props.workoutItems;
-    let noDuplicates = [...new Set(workoutsForTheDay)];
-    console.log(noDuplicates);
-    //takes away the first empty array
-    const initialArray = props.workoutItems.slice(1);
-    console.log(initialArray);
-    console.log(workoutsForTheDay);
-    const [editArray, setEditArry] = useState([]);
+    let workoutsForTheDay = props.workoutItems;
+    console.log(workoutsForTheDay.movement);
+    const [editArray, setEditArray] = useState([]);
     //Holds the month workout data
     let loggedSession = [];
     let updateArray = [];
-    let newArray = [];
-    //generates the new movement objects for the new month and day keys
-    const generateMovementObjects = (session) => {
-        return {
-            id: session._id,
-            movement: session.movement,
-            rounds: session.rounds,
-            reps: session.reps,
-            weight: session.weight,
-        };
-    };
-
+    
     const fetchWorkouts = () => {
-        console.log("new attempt");
+        console.log(props.updateWorkouts + " updateworkouts")
         props.updateWorkouts();
     };
 
@@ -62,51 +46,13 @@ const WorkoutLogOutput = (props) => {
             const updateWorkout = responseData.workout;
             console.log("here in fetch");
             console.log(responseData);
-            setEditArry([updateWorkout]);
+            setEditArray(updateWorkout);
             console.log(editArray);
             updateArray.push(updateWorkout);
             console.log(updateArray);
             setIsUpdateMode(true);
         } catch (err) {}
     };
-
-    //Check to see if month exists
-    const doesMonthExist = (props) => {
-        return loggedSession.find((lsession) => lsession.month === props.month);
-    };
-
-    //Check to see if day already existed in month...isMonthFound comes from the session.map() on bottom
-    const doesDayExist = (isMonthFound, props) => {
-        return isMonthFound.days.find(
-            (monthDays) => monthDays.day === props.day
-        );
-    };
-
-    //Helper method to generate activities based on day
-    const generateDaySession = (props) => {
-        return {
-            day: props.day,
-            activities: [generateMovementObjects(props)],
-        };
-    };
-
-    //map through the incoming data
-    workoutsForTheDay.map((sessions) => {
-        let isMonthFound = doesMonthExist(sessions);
-        if (isMonthFound) {
-            let isDayFound = doesDayExist(isMonthFound, sessions);
-            if (isDayFound) {
-                isDayFound.activities.push(generateMovementObjects(sessions));
-            } else {
-                isMonthFound.days.push(generateDaySession(sessions));
-            }
-        } else {
-            loggedSession.push({
-                month: sessions.month,
-                days: [generateDaySession(sessions)],
-            });
-        }
-    });
 
     const UpdateDeleteModal = () => {
         console.log("here in modal");
@@ -126,46 +72,36 @@ const WorkoutLogOutput = (props) => {
         <React.Fragment>
         {isUpdateMode && <UpdateDeleteModal />}
         <div>
-            {loggedSession.map((session)=>{
-                month= session.month;
+            {workoutsForTheDay.map(session=> {
+                month = session.month;
                 const day = session.day;
-                foundDay = day.map((fDay)=> fDay.day);
-                return(
+                foundDay = day.map(fDay=> fDay.day)
+                return (
+                    <React.Fragment>
                     <div>
                         <h2>
-                            {month} {foundDay}
+                            {session.month} {session.day}
                         </h2>
-                        {day.map((fDay=> {
-                            const foundActivities = fDay.activities;
-                            return (
-                                <div>
-                                    {foundActivities.map((workouts)=>{
-                                        const wid = workouts.id;
-                                        return(
-                                            <div>
-                                                <div>
-                                                    <p>Movement:{workouts.movement}</p>
-                                                    <p>Rounds:{workouts.rounds}</p>
-                                                    <p>Reps:{workouts.reps}</p>
-                                                    <p>Weight:{workouts.weight}</p>
-                                                </div>
-                                                <div>
-                                                    <motion.button
-                                                        value={wid}
-                                                        whileTap={{scale: 0.8,}}
-                                                        onClick={updateHandler}
-                                                        className="form_button_workout_data"
-                                                        >
-                                                        Update
-                                                    </motion.button>
-                                                </div>
-                                            </div>
-                                        )
-                                    })}
-                                </div>
-                            )
-                        }))}
                     </div>
+                    <div>
+                    <div>
+                        <p>Movement:{session.movement}</p>
+                        <p>Rounds:{session.rounds}</p>
+                        <p>Reps:{session.reps}</p>
+                        <p>Weight:{session.weight}</p>
+                    </div>
+                    <div>
+                        <motion.button
+                            value={session.id}
+                            whileTap={{scale: 0.8,}}
+                            onClick={updateHandler}
+                            className="form_button_workout_data"
+                            >
+                            Update
+                        </motion.button>
+                    </div>
+                    </div>
+                    </React.Fragment>
                 )
             })}
         </div>
@@ -174,3 +110,37 @@ const WorkoutLogOutput = (props) => {
 }
 
 export default WorkoutLogOutput;
+
+
+// {workoutsForTheDay.map(session=> {
+//     month = session.month;
+//     const day = session.day;
+//     foundDay = day.map(fDay=> fDay.day)
+//     return (
+//         <React.Fragment>
+//         <div>
+//             <h2>
+//                 {session.month} {session.day}
+//             </h2>
+//         </div>
+//         <div>
+//         <div>
+//             <p>Movement:{session.movement}</p>
+//             <p>Rounds:{session.rounds}</p>
+//             <p>Reps:{session.reps}</p>
+//             <p>Weight:{session.weight}</p>
+//         </div>
+//         <div>
+//             <motion.button
+//                 value={session.id}
+//                 whileTap={{scale: 0.8,}}
+//                 onClick={updateHandler}
+//                 className="form_button_workout_data"
+//                 >
+//                 Update
+//             </motion.button>
+//         </div>
+//         </div>
+//         </React.Fragment>
+//     )
+// })}
