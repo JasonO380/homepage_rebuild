@@ -1,4 +1,10 @@
-import React, {useState, useEffect, useReducer, useContext, useRef, } from "react";
+import React, {
+    useState,
+    useEffect,
+    useReducer,
+    useContext,
+    useRef,
+} from "react";
 import { motion } from "framer-motion";
 import { LoginRegisterContext } from "../Authenticate/login-register-context";
 import buttonStyle from "../CSS/variables/button_style";
@@ -6,25 +12,6 @@ import { formStyle, labelStyle, inputStyle } from "../CSS/variables/form_style";
 import { FaDumbbell } from "react-icons/fa";
 
 const UpdateWorkouts = (props) => {
-    const [formIsValid, setFormIsValid] = useState(true);
-    const [showModal, setShowModal] = useState(true);
-    const [isValid, setIsValid] = useState(true);
-    const auth = useContext(LoginRegisterContext);
-    console.log(props.updateItems)
-    const update = props.updateItems;
-    console.log(update);
-    if (update.length < 1) {
-        props.allWorkoutsDeleted(true);
-    }
-    const wid = [props.workoutitems.map((workouts) => workouts._id)];
-    const refPoint = useRef(null);
-    const [inputState, dispatch] = useReducer(inputReducer, {
-        movement: "",
-        reps: "",
-        rounds: "",
-        weight: "",
-    });
-
     const inputReducer = (state, action) => {
         const dateEntry = new Date();
         switch (action.type) {
@@ -51,7 +38,27 @@ const UpdateWorkouts = (props) => {
                 return state;
         }
     };
-    
+    const [formIsValid, setFormIsValid] = useState(true);
+    const [showModal, setShowModal] = useState(true);
+    const [isValid, setIsValid] = useState(true);
+    const auth = useContext(LoginRegisterContext);
+    console.log(props.updateItems);
+    let update = props.updateItems;
+    console.log(update);
+    console.log(update.movement);
+    if (update.length < 1) {
+        props.allWorkoutsDeleted(true);
+    }
+    const wid = update.id;
+    console.log(wid)
+    const refPoint = useRef(null);
+    const [inputState, dispatch] = useReducer(inputReducer, {
+        movement: "",
+        reps: "",
+        rounds: "",
+        weight: "",
+    });
+
     useEffect(() => {
         document.addEventListener("click", handleClickOutsideDiv);
     }, [wid]);
@@ -66,6 +73,7 @@ const UpdateWorkouts = (props) => {
             console.log("Clicked inside");
         } else {
             console.log("clicked outside");
+            props.isUpdateMode(false);
             setShowModal(false);
         }
         return () => {
@@ -85,22 +93,12 @@ const UpdateWorkouts = (props) => {
 
     const postUpdate = async (event) => {
         event.preventDefault();
-        if (!inputState.movement) {
-            setIsValid(false);
-            setFormIsValid(false);
-            return null;
-        }
-        if (!inputState.reps) {
-            setIsValid(false);
-            setFormIsValid(false);
-            return null;
-        }
-        if (!inputState.rounds) {
-            setIsValid(false);
-            setFormIsValid(false);
-            return null;
-        }
-        if (!inputState) {
+        if (
+            !inputState.movement ||
+            !inputState.reps ||
+            !inputState.rounds ||
+            !inputState.movement
+        ) {
             setIsValid(false);
             setFormIsValid(false);
             return null;
@@ -145,71 +143,68 @@ const UpdateWorkouts = (props) => {
                 }
             );
         } catch (err) {}
-        props.isUpdateMode(false);
         props.fetch();
+        props.isUpdateMode(false);
     };
 
     return (
         <div>
-            <form style={formStyle}>
-                    <h1>
-                        <FaDumbbell icon="fa-duotone fa-user" />
-                    </h1>
-                    <label style={labelStyle}>Movement</label>
-                    <input
-                        style={inputStyle}
-                        name="movement"
-                        placeholder={props.workoutitems.map((w) => w.movement)}
-                        label="movement"
-                        onChange={handleChange}
-                    />
-                    <label style={labelStyle}>Rounds</label>
-                    <input
-                        style={inputStyle}
-                        name="Rounds"
-                        label='rounds'
-                        placeholder={props.workoutitems.map((w) => w.rounds)}
-                        onChange={handleChange}
-                    />
-                    <label style={labelStyle}>Reps</label>
-                    <input
-                        style={inputStyle}
-                        name="Reps"
-                        label='reps'
-                        placeholder={props.workoutitems.map((w) => w.reps)}
-                        onChange={handleChange}
-                    />
-                    <label style={labelStyle}>Weight</label>
-                    <input
-                        style={inputStyle}
-                        name="Weight"
-                        label='weight'
-                        placeholder={props.workoutitems.map((w) => w.weight)}
-                        onChange={handleChange}
-                    />
-                    <button
-                        style={buttonStyle}
-                        onClick={postUpdate}
-                        type="submit"
-                    >
-                        EDIT
-                    </button>
-                    <button
-                        style={buttonStyle}
-                        onClick={deleteWorkout}
-                        type="submit"
-                    >
-                        DELETE
-                    </button>
-                    {!isValid && (
-                        <div>
-                            <p>Please enter all fields</p>
-                        </div>
-                    )}
+            <form
+            ref={refPoint} 
+            style={formStyle}>
+                <h1>
+                    <FaDumbbell icon="fa-duotone fa-user" />
+                </h1>
+                <label style={labelStyle}>Movement</label>
+                <input
+                    style={inputStyle}
+                    name="movement"
+                    placeholder={update.movement}
+                    label="movement"
+                    onChange={handleChange}
+                />
+                <label style={labelStyle}>Rounds</label>
+                <input
+                    style={inputStyle}
+                    name="Rounds"
+                    label="rounds"
+                    placeholder={update.rounds}
+                    onChange={handleChange}
+                />
+                <label style={labelStyle}>Reps</label>
+                <input
+                    style={inputStyle}
+                    name="Reps"
+                    label="reps"
+                    placeholder={update.reps}
+                    onChange={handleChange}
+                />
+                <label style={labelStyle}>Weight</label>
+                <input
+                    style={inputStyle}
+                    name="Weight"
+                    label="weight"
+                    placeholder={update.weight}
+                    onChange={handleChange}
+                />
+                <button style={buttonStyle} onClick={postUpdate} type="submit">
+                    EDIT
+                </button>
+                <button
+                    style={buttonStyle}
+                    onClick={deleteWorkout}
+                    type="submit"
+                >
+                    DELETE
+                </button>
+                {!isValid && (
+                    <div>
+                        <p>Please enter all fields</p>
+                    </div>
+                )}
             </form>
         </div>
-    )
-
-}
+    );
+};
 
 export default UpdateWorkouts;

@@ -4,32 +4,33 @@ import UpdateWorkouts from "./update-workouts";
 import { motion } from "framer-motion";
 
 const TestOutput = (props) => {
-    let activities;
     let selectedWorkoutID
     let month;
     let foundDay;
     let updateArray = [];
     let loggedSession = [];
     let editArray = [];
+    const [currentSession, setCurrentSession] = useState([updateArray])
     let sessionToday = props.workoutItems;
     const [isUpdateMode, setIsUpdateMode] = useState(false);
     const session = props.workoutItems
-    // console.log(props.workoutItems);
-    // console.log(sessionToday.map(s => s.movement))
-
+    
     const fetchWorkouts = () => {
-        console.log(props.updateWorkouts + " updateworkouts")
+        console.log(props.updateWorkouts())
         props.updateWorkouts();
     };
 
     const updateHandler = (event) => {
-        let selectedWorkoutToUpdate = event.target.name;
+        // setIsUpdateMode(true);
+        // selectedWorkoutToUpdate = event.target.name;
         selectedWorkoutID = event.target.value;
         console.log(selectedWorkoutID);
-        // getWorkoutToUpdateId(selectedWorkoutID);
+        console.log(isUpdateMode)
+        getWorkoutToUpdateId(selectedWorkoutID);
     };
 
     const getWorkoutToUpdateId = async (workoutID) => {
+        //isUpdateMode and currentSession need to be in here so that the props for the updateworkouts component is received at the same time isUpdateMode becomes true due to async function
         console.log("here");
         console.log(isUpdateMode);
         try {
@@ -39,30 +40,14 @@ const TestOutput = (props) => {
             const responseData = await response.json();
             const updateWorkout = responseData.workout;
             console.log("here in fetch");
-            console.log(responseData);
-            updateArray = [responseData]
+            console.log(updateWorkout);
+            setCurrentSession(updateWorkout)
+            updateArray = [updateWorkout]
             console.log(updateArray);
             UpdateDeleteModal(updateArray)
-            setIsUpdateMode((prevIsUpdateMode) => !prevIsUpdateMode);
+            setIsUpdateMode(true);
             console.log(isUpdateMode)
         } catch (err) {}
-    };
-
-    const UpdateDeleteModal = (updateInfo) => {
-        console.log(updateInfo)
-        console.log(isUpdateMode)
-        editArray = updateInfo
-        console.log("here in modal");
-        console.log(editArray)
-        return ReactDOM.createPortal(
-            <UpdateWorkouts
-                // fetch={fetchWorkouts}
-                isUpdateMode={setIsUpdateMode}
-                showUpdate={setIsUpdateMode}
-                workoutitems={editArray}
-            />,
-            document.getElementById("overlay")
-        );
     };
 
     //generates the new movement objects for the new month and day keys
@@ -113,11 +98,36 @@ const TestOutput = (props) => {
             });
         }
     });
-    
 
+    const UpdateDeleteModal = (updateInfo) => {
+        const updateSession = updateInfo;
+        console.log(updateSession)
+        console.log(isUpdateMode)
+        editArray = updateInfo
+        console.log("here in modal");
+        console.log(currentSession)
+        console.log(editArray.length > 0)
+        console.log(updateArray)
+        return ReactDOM.createPortal(
+            <UpdateWorkouts
+                fetch={fetchWorkouts}
+                isUpdateMode={setIsUpdateMode}
+                showUpdate={setIsUpdateMode}
+                updateItems={currentSession}
+            />,
+            document.getElementById("overlay")
+        );
+    };
+
+    useEffect(()=> {
+        console.log(currentSession)
+        console.log(' stank doo doo')
+        console.log(isUpdateMode)
+    }, [isUpdateMode, currentSession])
+    
     return (
         <React.Fragment>
-        {isUpdateMode ? <UpdateDeleteModal /> : null }
+        {isUpdateMode && <UpdateDeleteModal />}
         <div className="workout_wrapper">
                 {loggedSession.map((session) => {
                     month = session.month;
@@ -170,3 +180,23 @@ const TestOutput = (props) => {
 }
 
 export default TestOutput;
+
+
+
+// const getWorkoutToUpdateId = async (workoutID) => {
+//     setIsUpdateMode(true);
+//     console.log("here");
+//     console.log(isUpdateMode);
+//     try {
+//         const response = await fetch(
+//             `https://barbell-factor.onrender.com/api/workouts/${workoutID}`
+//         );
+//         const responseData = await response.json();
+//         const updateWorkout = responseData.workout;
+//         console.log("here in fetch");
+//         console.log(responseData);
+//         updateArray = [responseData]
+//         console.log(updateArray);
+//         console.log(isUpdateMode)
+//     } catch (err) {}
+// };

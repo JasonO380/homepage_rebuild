@@ -62,7 +62,9 @@ const WorkoutLog = () => {
             >
                 <WorkoutForm workoutFormItems={getNewWorkoutEntries} />
                 {isNewDayToAdd ? (
-                    <TestOutput workoutItems={todaysSession} />
+                    <TestOutput
+                    updateWorkouts={fetchWorkouts} 
+                    workoutItems={todaysSession} />
                 ) : null}
             </div>
         </React.Fragment>
