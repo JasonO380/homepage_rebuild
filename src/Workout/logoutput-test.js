@@ -13,40 +13,29 @@ const TestOutput = (props) => {
     const [currentSession, setCurrentSession] = useState([updateArray])
     let sessionToday = props.workoutItems;
     const [isUpdateMode, setIsUpdateMode] = useState(false);
-    const session = props.workoutItems
-    
+
+    //helper function to trigger re render after the workout is deleted
     const fetchWorkouts = () => {
-        console.log(props.updateWorkouts())
         props.updateWorkouts();
     };
 
     const updateHandler = (event) => {
-        // setIsUpdateMode(true);
-        // selectedWorkoutToUpdate = event.target.name;
         selectedWorkoutID = event.target.value;
-        console.log(selectedWorkoutID);
-        console.log(isUpdateMode)
         getWorkoutToUpdateId(selectedWorkoutID);
     };
 
     const getWorkoutToUpdateId = async (workoutID) => {
         //isUpdateMode and currentSession need to be in here so that the props for the updateworkouts component is received at the same time isUpdateMode becomes true due to async function
-        console.log("here");
-        console.log(isUpdateMode);
         try {
             const response = await fetch(
                 `https://barbell-factor.onrender.com/api/workouts/${workoutID}`
             );
             const responseData = await response.json();
             const updateWorkout = responseData.workout;
-            console.log("here in fetch");
-            console.log(updateWorkout);
             setCurrentSession(updateWorkout)
             updateArray = [updateWorkout]
-            console.log(updateArray);
             UpdateDeleteModal(updateArray)
             setIsUpdateMode(true);
-            console.log(isUpdateMode)
         } catch (err) {}
     };
 
@@ -101,13 +90,7 @@ const TestOutput = (props) => {
 
     const UpdateDeleteModal = (updateInfo) => {
         const updateSession = updateInfo;
-        console.log(updateSession)
-        console.log(isUpdateMode)
         editArray = updateInfo
-        console.log("here in modal");
-        console.log(currentSession)
-        console.log(editArray.length > 0)
-        console.log(updateArray)
         return ReactDOM.createPortal(
             <UpdateWorkouts
                 fetch={fetchWorkouts}
@@ -118,12 +101,6 @@ const TestOutput = (props) => {
             document.getElementById("overlay")
         );
     };
-
-    useEffect(()=> {
-        console.log(currentSession)
-        console.log(' stank doo doo')
-        console.log(isUpdateMode)
-    }, [isUpdateMode, currentSession])
     
     return (
         <React.Fragment>

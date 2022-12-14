@@ -143,8 +143,8 @@ const UpdateWorkouts = (props) => {
                 }
             );
         } catch (err) {}
-        props.fetch();
         props.isUpdateMode(false);
+        props.fetch();
     };
 
     return (

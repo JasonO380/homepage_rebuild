@@ -5,25 +5,24 @@ import TestOutput from "./logoutput-test";
 import { LoginRegisterContext } from "../Authenticate/login-register-context";
 
 let userID;
-let todaysSession;
+let todaysSession = [];
 const WorkoutLog = () => {
-    let finalEditSet = new Set();
     const [newEntries, setNewEntries] = useState([]);
-    const [newlyAddedSesion, setNewlyAddedSession] = useState();
+    const [workouts, setWorkouts] = useState([]);
     const [isNewDayToAdd, setIsNewDayToAdd] = useState(false);
     const auth = useContext(LoginRegisterContext);
     userID = auth.userID;
     //Helper function to get newly added workout entries on the day
     const getNewWorkoutEntries = (session) => {
-        console.log(session);
-        finalEditSet.add(session);
-        todaysSession = [...finalEditSet];
         setNewEntries([...newEntries, session]);
-        console.log(finalEditSet);
-        console.log(newEntries);
     };
 
+    const handleDelete = () => {
+        fetchWorkouts()
+    }
+
     const fetchWorkouts = async () => {
+        let finalEditSet = new Set();
         const userID = auth.userID;
         try {
             const response = await fetch(
@@ -41,16 +40,16 @@ const WorkoutLog = () => {
                 if (s.day === currentDay && s.month === currentMonth) {
                     setIsNewDayToAdd(true);
                     finalEditSet.add(s);
-                }
+                } 
             });
             todaysSession = [...finalEditSet];
-            console.log(todaysSession);
         } catch (err) {}
+        setWorkouts(todaysSession)
     };
 
     useEffect(() => {
-        fetchWorkouts();
-    }, [userID, newEntries, finalEditSet, todaysSession]);
+        fetchWorkouts()
+    }, [userID, newEntries]);
 
     return (
         <React.Fragment>
@@ -63,9 +62,14 @@ const WorkoutLog = () => {
                 <WorkoutForm workoutFormItems={getNewWorkoutEntries} />
                 {isNewDayToAdd ? (
                     <TestOutput
-                    updateWorkouts={fetchWorkouts} 
-                    workoutItems={todaysSession} />
+                    updateWorkouts={handleDelete} 
+                    workoutItems={workouts} />
                 ) : null}
+                {/* {isNewDayToAdd ? (
+                    <WorkoutLogOutput
+                    updateWorkouts={handleDelete} 
+                    workoutItems={workouts} />
+                ) : null} */}
             </div>
         </React.Fragment>
     );
