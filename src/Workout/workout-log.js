@@ -3,6 +3,7 @@ import WorkoutForm from "./workout-form";
 import WorkoutLogOutput from "./workout-log-output";
 import TestOutput from "./logoutput-test";
 import { LoginRegisterContext } from "../Authenticate/login-register-context";
+import { AnimatePresence } from "framer-motion";
 
 let userID;
 let todaysSession = [];
@@ -60,16 +61,16 @@ const WorkoutLog = () => {
                 exit={{ x: window.innerWidth, transition: { duration: 0.2 } }}
             >
                 <WorkoutForm workoutFormItems={getNewWorkoutEntries} />
-                {isNewDayToAdd ? (
+                {/* {isNewDayToAdd ? (
                     <TestOutput
                     updateWorkouts={handleDelete} 
                     workoutItems={workouts} />
-                ) : null}
-                {/* {isNewDayToAdd ? (
+                ) : null} */}
+                {isNewDayToAdd ? (
                     <WorkoutLogOutput
                     updateWorkouts={handleDelete} 
                     workoutItems={workouts} />
-                ) : null} */}
+                ) : null}
             </div>
         </React.Fragment>
     );

@@ -1,0 +1,45 @@
+.workout_wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.workout_date_header {
+    text-align: center;
+}
+
+.movement_data {
+    background: black;
+    color: #fff;
+    border-radius: 20px;
+    font-weight: 800;
+    padding: 10px;
+}
+
+
+@media screen and (min-width: 760px){
+    .workout_container {
+        width: 100%;
+    }
+
+    .session_container {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .movement_data_container {
+        flex: 1 1 32%;
+    }
+
+    .movement_data {
+        margin-left: auto;
+        margin-right: auto;
+        display: table;
+        padding: 10px 30px;
+    }
+
+    .button_container_workout_data_output {
+        text-align: center;
+    }
+}

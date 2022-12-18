@@ -42,15 +42,11 @@ const UpdateWorkouts = (props) => {
     const [showModal, setShowModal] = useState(true);
     const [isValid, setIsValid] = useState(true);
     const auth = useContext(LoginRegisterContext);
-    console.log(props.updateItems);
     let update = props.updateItems;
-    console.log(update);
-    console.log(update.movement);
     if (update.length < 1) {
         props.allWorkoutsDeleted(true);
     }
     const wid = update.id;
-    console.log(wid)
     const refPoint = useRef(null);
     const [inputState, dispatch] = useReducer(inputReducer, {
         movement: "",
@@ -64,21 +60,14 @@ const UpdateWorkouts = (props) => {
     }, [wid]);
 
     const handleClickOutsideDiv = (event) => {
-        console.log(event.target);
-        console.log(refPoint);
         const updateDiv = refPoint.current;
-        console.log(updateDiv);
         if (updateDiv && updateDiv.contains(event.target)) {
             setShowModal(true);
-            console.log("Clicked inside");
         } else {
-            console.log("clicked outside");
             props.isUpdateMode(false);
             setShowModal(false);
-        }
-        return () => {
             document.removeEventListener("click", handleClickOutsideDiv);
-        };
+        }
     };
 
     const handleChange = (event) => {
@@ -97,7 +86,7 @@ const UpdateWorkouts = (props) => {
             !inputState.movement ||
             !inputState.reps ||
             !inputState.rounds ||
-            !inputState.movement
+            !inputState.weight
         ) {
             setIsValid(false);
             setFormIsValid(false);
@@ -124,7 +113,6 @@ const UpdateWorkouts = (props) => {
                 }
             );
             const responseData = await response.json();
-            console.log(responseData);
         } catch (err) {}
         props.isUpdateMode(false);
         props.fetch();
@@ -148,13 +136,15 @@ const UpdateWorkouts = (props) => {
     };
 
     return (
-        <div>
+        <div 
+        style={{
+            display: !showModal && "none"}}>
             <form
             ref={refPoint} 
             style={formStyle}>
-                <h1>
-                    <FaDumbbell icon="fa-duotone fa-user" />
-                </h1>
+                <h3>
+                    EDIT
+                </h3>
                 <label style={labelStyle}>Movement</label>
                 <input
                     style={inputStyle}
@@ -166,7 +156,7 @@ const UpdateWorkouts = (props) => {
                 <label style={labelStyle}>Rounds</label>
                 <input
                     style={inputStyle}
-                    name="Rounds"
+                    name="rounds"
                     label="rounds"
                     placeholder={update.rounds}
                     onChange={handleChange}
@@ -174,7 +164,7 @@ const UpdateWorkouts = (props) => {
                 <label style={labelStyle}>Reps</label>
                 <input
                     style={inputStyle}
-                    name="Reps"
+                    name="reps"
                     label="reps"
                     placeholder={update.reps}
                     onChange={handleChange}
@@ -182,7 +172,7 @@ const UpdateWorkouts = (props) => {
                 <label style={labelStyle}>Weight</label>
                 <input
                     style={inputStyle}
-                    name="Weight"
+                    name="weight"
                     label="weight"
                     placeholder={update.weight}
                     onChange={handleChange}

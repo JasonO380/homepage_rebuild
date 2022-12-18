@@ -79,7 +79,6 @@ const FitnessTrackerPreview = () => {
                         whileTap={{ scale: 0.8 }}
                         onClick={rotateNext}
                         style={buttonStyle}
-                        // className="pic_demo_header"
                     >
                         Preview
                     </motion.button>
