@@ -6,12 +6,14 @@ import React, {
     useRef,
 } from "react";
 import { motion } from "framer-motion";
+import { updateFormStyle } from "../CSS/variables/form_style";
 import { LoginRegisterContext } from "../Authenticate/login-register-context";
 import buttonStyle from "../CSS/variables/button_style";
 import { formStyle, labelStyle, inputStyle } from "../CSS/variables/form_style";
-import { FaDumbbell } from "react-icons/fa";
+import LoadingSpinner from "../SharedComponents/LoadingSpinner";
 
 const UpdateWorkouts = (props) => {
+    const [isLoading, setIsLoading] = useState(false)
     const inputReducer = (state, action) => {
         const dateEntry = new Date();
         switch (action.type) {
@@ -95,6 +97,7 @@ const UpdateWorkouts = (props) => {
             props.isUpdateMode(false);
             props.showUpdate(true);
         }
+        setIsLoading(true)
         try {
             const response = await fetch(
                 `https://barbell-factor.onrender.com/api/workouts/${wid}`,
@@ -115,11 +118,13 @@ const UpdateWorkouts = (props) => {
             const responseData = await response.json();
         } catch (err) {}
         props.isUpdateMode(false);
+        setIsLoading(false)
         props.fetch();
     };
 
     const deleteWorkout = async (event) => {
         event.preventDefault();
+        setIsLoading(true)
         try {
             const response = await fetch(
                 `https://barbell-factor.onrender.com/api/workouts/${wid}`,
@@ -131,6 +136,7 @@ const UpdateWorkouts = (props) => {
                 }
             );
         } catch (err) {}
+        setIsLoading(false)
         props.isUpdateMode(false);
         props.fetch();
     };
@@ -139,9 +145,10 @@ const UpdateWorkouts = (props) => {
         <div 
         style={{
             display: !showModal && "none"}}>
+            {isLoading && <LoadingSpinner />}
             <form
             ref={refPoint} 
-            style={formStyle}>
+            style={updateFormStyle}>
                 <h3>
                     EDIT
                 </h3>

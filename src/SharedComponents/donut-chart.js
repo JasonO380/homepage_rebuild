@@ -34,9 +34,9 @@ ChartJS.register(
 const DonutChart = (props) => {
     ChartJS.defaults.color = "#FFFFFF";
     const date = new Date();
+    console.log(props.items2)
     const monthName = date.toLocaleString("en-US", { month: "long" });
     const macrosForGraph = [props.items2];
-    console.log(macrosForGraph);
     const macroGraphInfo = {
         labels: [
             "Carbs" + " " + macrosForGraph.map((macros) => macros.carbs),

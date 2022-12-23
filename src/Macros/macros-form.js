@@ -1,6 +1,6 @@
 import React, { useState, useReducer, useContext } from "react";
-import FormNav from "../Nav/form-nav";
-import Footer from "../Footer/footer";
+import PageNav from "../Nav/page-nav";
+import LoadingSpinner from "../SharedComponents/LoadingSpinner";
 import buttonStyle from "../CSS/variables/button_style";
 import { 
     formStyle, 
@@ -14,7 +14,7 @@ import { motion } from "framer-motion";
 
 const MacrosForm = (props)=> {
     const auth = useContext(LoginRegisterContext);
-    console.log(auth.userID)
+    const [isLoading, setIsLoading] = useState(false)
     const inputReducer = (state, action) => {
         const dateEntry = new Date();
         switch (action.type) {
@@ -40,7 +40,6 @@ const MacrosForm = (props)=> {
                 return state;
         }
     };
-    const [formIsValid, setFormIsValid] = useState(true);
     const [isValid, setIsValid] = useState(true);
     const [inputState, dispatch] = useReducer(inputReducer, {});
 
@@ -69,6 +68,7 @@ const MacrosForm = (props)=> {
             console.log(inputState);
             props.onAdd(inputState);
         }
+        setIsLoading(true)
         try {
             const response = await fetch(
                 "https://barbell-factor.onrender.com/api/macros",
@@ -94,10 +94,10 @@ const MacrosForm = (props)=> {
             console.log(inputState);
             props.fetch();
         } catch (err) {}
+        setIsLoading(false)
         dispatch({
             type: "CLEAR_FORM",
         });
-        setFormIsValid(true);
         event.preventDefault();
     }
 
@@ -107,7 +107,8 @@ const MacrosForm = (props)=> {
         animate={{y: 0, transition: { type: "spring", bounce: 0.65, duration: .8 }}}
         exit={{x: window.innerWidth, transition: {duration: .35}}}  
         style={formWrapper}>
-            <FormNav />
+            <PageNav />
+            {isLoading && <LoadingSpinner />}
             <form style={formStyle}>
             <h1><FaUtensils icon="fa-duotone fa-user" /></h1>
                 <label style={labelStyle}>Protein</label>
@@ -142,7 +143,6 @@ const MacrosForm = (props)=> {
                 <p>Please enter all fields</p>
             )}
             </form>
-            <Footer />
         </motion.div>
 
     )

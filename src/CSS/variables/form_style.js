@@ -10,7 +10,7 @@ const formStyle = {
     margin:'auto',
 }
 
-const updateCarbsFormStyle = {
+const updateFormStyle = {
     display: 'flex',
     flexDirection: 'column',
     textAlign: 'center',
@@ -56,4 +56,4 @@ const inputStyle = {
     borderRadius: 7,
 }
 
-export {formStyle, formWrapper, updateCarbsFormStyle, labelStyle, inputStyle, form_nav_container, form_nav_link}
+export {formStyle, formWrapper, updateFormStyle, labelStyle, inputStyle, form_nav_container, form_nav_link}

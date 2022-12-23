@@ -1,10 +1,12 @@
 import React, { useState, useReducer, useContext } from "react";
 import { LoginRegisterContext } from "../Authenticate/login-register-context";
 import { useNavigate } from "react-router-dom";
+import { centerDiv } from "../CSS/variables/global-div-styles";
 import MacrosEdit from "./macros-edit";
+import LoadingSpinner from "../SharedComponents/LoadingSpinner";
 import DonutChart from "../SharedComponents/donut-chart";
 import { labelStyle, inputStyle } from "../CSS/variables/form_style";
-import { updateCarbsFormStyle } from "../CSS/variables/form_style";
+import { updateFormStyle } from "../CSS/variables/form_style";
 import buttonStyle from "../CSS/variables/button_style";
 import { motion } from "framer-motion";
 import "./macros-edit-output.css";
@@ -12,6 +14,7 @@ import "./macros-edit-output.css";
 let mid;
 const MacrosEditOutput = (props) => {
     const auth = useContext(LoginRegisterContext);
+    const [isLoading, setIsLoading] = useState(false)
     const inputReducer = (state, action) => {
         const dateEntry = new Date();
         switch (action.type) {
@@ -72,6 +75,7 @@ const MacrosEditOutput = (props) => {
             setFormIsValid(false);
             return null;
         }
+        setIsLoading(true)
         setFormIsValid(true);
         try {
             const response = await fetch(
@@ -93,6 +97,7 @@ const MacrosEditOutput = (props) => {
             console.log(responseData);
         } catch (err) {}
         setUpdateComplete(true);
+        setIsLoading(false)
     };
 
     if (updateComplete) {
@@ -101,6 +106,11 @@ const MacrosEditOutput = (props) => {
 
     return (
         <React.Fragment>
+        {isLoading && (
+            <div className="spinner">
+                <LoadingSpinner />
+            </div>
+        )}
             {props.updateData.map((macros) => {
                 return (
                     <motion.div
@@ -113,7 +123,7 @@ const MacrosEditOutput = (props) => {
                         }}
                     >
                         <DonutChart items2={macros} />
-                        <form style={updateCarbsFormStyle}>
+                        <form style={updateFormStyle}>
                             
                                 <label style={labelStyle}>Carbs</label>
                                 <input
@@ -164,9 +174,7 @@ const MacrosEditOutput = (props) => {
                                 >
                                     Update
                                 </motion.button>
-                            
-                        </form>
-                        {!isValid ? (
+                                {!isValid ? (
                             <div
                                 style={{ display: formIsValid && "none" }}
                                 className="error_message"
@@ -176,6 +184,7 @@ const MacrosEditOutput = (props) => {
                                 </p>
                             </div>
                         ) : null}
+                        </form>
                     </motion.div>
                 );
             })}

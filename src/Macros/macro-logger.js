@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import MacrosForm from "./macros-form";
+import PageNav from "../Nav/page-nav";
 import MacrosEditOutput from "./macros-edit-output";
 import { LoginRegisterContext } from "../Authenticate/login-register-context";
 import { motion } from "framer-motion";
@@ -80,6 +81,9 @@ const MacroLogger = () => {
                 className="macros_edit_output_wrapper"
                 exit={{ x: window.innerWidth, transition: { duration: 0.5 } }}
             >
+            <div style={{position:"absolute"}}>
+            <PageNav />
+            </div>
                 <MacrosEditOutput updateData={editArray} />
             </motion.div>
         );
@@ -94,7 +98,6 @@ const MacroLogger = () => {
             >
                 <MacrosForm
                     fetch={fetchMacros}
-                    // updateMode={isUpdateMode}
                     onUpdate={editMacros}
                     onAdd={addMacros}
                 />

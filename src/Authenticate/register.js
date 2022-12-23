@@ -1,13 +1,15 @@
 import React, { useState, useReducer, useContext } from "react";
-import FormNav from "../Nav/form-nav";
+import PageNav from "../Nav/page-nav";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaUser } from "react-icons/fa";
 import { LoginRegisterContext } from "./login-register-context";
 import { formStyle } from "../CSS/variables/form_style";
+import LoadingSpinner from "../SharedComponents/LoadingSpinner";
 import "./authenticate.css";
 
 const Register = () => {
+    const [isLoading, setIsloading] = useState(false);
     const inputReducer = (state, action) => {
         switch (action.type) {
             case "INPUT_CHANGE":
@@ -41,6 +43,7 @@ const Register = () => {
     };
 
     const registerUser = async (event) => {
+        setIsloading(true)
         event.preventDefault();
         const inputName = event.target.name;
         const inputValue = event.target.value;
@@ -67,6 +70,7 @@ const Register = () => {
         } catch (err) {
             console.log(err);
         }
+        setIsloading(false)
     };
 
     return (
@@ -79,7 +83,8 @@ const Register = () => {
             exit={{ x: window.innerWidth, transition: { duration: 0.35 } }}
             className="login_register_wrapper"
         >
-            <FormNav />
+            <PageNav />
+            {isLoading && <LoadingSpinner />}
             <form
             style={formStyle} 
             onSubmit={registerUser}>
@@ -91,7 +96,7 @@ const Register = () => {
                     className="login_register_input"
                     name="username"
                     value={inputState.username}
-                    placeholder="enter email"
+                    placeholder="enter username"
                     onChange={changeHandler}
                 />
                 <label className="login_register_label">Email</label>
@@ -99,7 +104,7 @@ const Register = () => {
                     className="login_register_input"
                     name="email"
                     value={inputState.email}
-                    placeholder="enter email"
+                    placeholder="enter email must contain @"
                     onChange={changeHandler}
                 />
                 <label className="login_register_label">Password</label>
@@ -107,7 +112,7 @@ const Register = () => {
                     className="login_register_input"
                     name="password"
                     value={inputState.password}
-                    placeholder="enter password"
+                    placeholder="enter password at least 6 characters"
                     onChange={changeHandler}
                 />
                 <button

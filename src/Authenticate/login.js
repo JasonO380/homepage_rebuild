@@ -1,5 +1,6 @@
 import React, { useState, useReducer, useContext } from "react";
-import FormNav from "../Nav/form-nav";
+import PageNav from "../Nav/page-nav";
+import LoadingSpinner from "../SharedComponents/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaUser } from "react-icons/fa";
@@ -9,6 +10,7 @@ import "./authenticate.css";
 
 const Login = () => {
     let accessGranted;
+    const [isLoading, setIsLoading] = useState(false);
     const inputReducer = (state, action) => {
         switch (action.type) {
             case "INPUT_CHANGE":
@@ -41,6 +43,7 @@ const Login = () => {
     };
 
     const loginUser = async (event) => {
+        setIsLoading(true)
         event.preventDefault();
         const inputName = event.target.name;
         const inputValue = event.target.value;
@@ -71,6 +74,7 @@ const Login = () => {
             setLogin(false);
         } else {
             navigate("/dashboard");
+            setIsLoading(false)
         }
     };
 
@@ -84,7 +88,8 @@ const Login = () => {
             exit={{ x: window.innerWidth, transition: { duration: 0.35 } }}
             className="login_register_wrapper"
         >
-            <FormNav />
+            <PageNav />
+            {isLoading && <LoadingSpinner />}
             <form style={formStyle} onSubmit={loginUser}>
                 <h1>
                     <FaUser icon="fa-duotone fa-user" />
@@ -112,6 +117,7 @@ const Login = () => {
                 >
                     LOGIN
                 </button>
+                {!login && (<p>{accessGranted}</p>)}
             </form>
         </motion.div>
     );

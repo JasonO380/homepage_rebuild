@@ -3,6 +3,7 @@ import Login from "../Authenticate/login";
 import HomePage from "../Homepage/homepage";
 import Register from "../Authenticate/register";
 import WorkoutLog from "../Workout/workout-log";
+import GetAllWorkouts from "../Workout/get-all-workouts";
 import MacroLogger from "../Macros/macro-logger";
 import MacroViewer from "../Macros/macro-viewer";
 import Dashboard from "../Dashboard/dashboard";
@@ -20,6 +21,7 @@ const AnimatedRoutes = () => {
                 <Route path="/register" element={<Register />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/workoutlog" element={<WorkoutLog />} />
+                <Route path="/workoutview" element={<GetAllWorkouts />} />
                 <Route path="/macroslogger" element={<MacroLogger />} />
                 <Route path="/macrosview" element={<MacroViewer />} />
             </Routes>

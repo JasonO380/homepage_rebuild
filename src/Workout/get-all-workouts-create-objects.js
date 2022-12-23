@@ -1,13 +1,11 @@
 import React from "react";
 import { motion } from "framer-motion";
-import buttonStyle from "../CSS/variables/button_style";
-import './create-month-training-objects.css';
+import "./create-month-training-objects.css"
 
-const CreateMonthTrainingObjects = (props) => {
-    const initialSession = props.session;
+const GetAllWorkoutsCreateObjects = (props) => {
+    const session = props.session;
+    console.log(session)
     const loggedSession = [];
-    let month;
-    let foundDay;
     const animation = {
         offscreen: { scale:0 },
         onscreen: {
@@ -15,7 +13,6 @@ const CreateMonthTrainingObjects = (props) => {
             transition: { type: "spring", bounce: 0.65, duration: 0.8 },
         },
     };
-    //generates the new movement objects for the new month and day keys
     const generateMovementObjects = (session) => {
         return {
             id: session._id,
@@ -47,7 +44,7 @@ const CreateMonthTrainingObjects = (props) => {
     };
 
     //map through the incoming data
-    initialSession.map((sessions) => {
+    session.map((sessions) => {
         let isMonthFound = doesMonthExist(sessions);
         if (isMonthFound) {
             let isDayFound = doesDayExist(isMonthFound, sessions);
@@ -65,28 +62,29 @@ const CreateMonthTrainingObjects = (props) => {
     });
 
     return (
-        <div className="workout_wrapper">
-            {loggedSession.map((session) => {
-                month = session.month;
-                let day = session.days;
-                foundDay = day.map((fDay) => fDay.day);
-                return (
+        <motion.div 
+        className="workout_wrapper"
+        initial={{y: -500}}
+        animate={{y: 0, transition: { type: "spring", bounce: 0.65, duration: .8 }}}
+        exit={{x: window.innerWidth, transition: {duration: .35}}} >
+            {loggedSession.map(session => {
+                const month = session.month
+                const days = session.days;
+                return(
                     <div className="workout_container">
-                        <h2 className="workout_date_header_log">
-                            {month} 
-                        </h2>
-                        {day.map((fDay) => {
-                            const foundActivities = fDay.activities;
-                            foundDay = fDay.day;
+                        <h1 className="workout_month_header">{month}</h1>
+                        {days.map(fDay => {
+                            const day = fDay.day;
+                            const training = fDay.activities.reverse();
                             return (
-                                <div className="session_container_log">
-                                    {foundActivities.map((workouts) => {
-                                        const wid = workouts.id;
+                                <div className="session_container">
+                                    <h2 className="workout_date_header">{day}</h2>
+                                    {training.map(session =>{
                                         return (
                                             <motion.div
                                             initial={"offscreen"}
                                             whileInView={"onscreen"} 
-                                            viewport={{ once: false, amount: .45 }} 
+                                            viewport={{ once: false, amount: .45 }}
                                             className="movement_data_container">
                                                 <React.Fragment>
                                                     <motion.div
@@ -94,46 +92,32 @@ const CreateMonthTrainingObjects = (props) => {
                                                     className="movement_data">
                                                         <p>
                                                             Movement:
-                                                            {workouts.movement}
+                                                            {session.movement}
                                                         </p>
                                                         <p>
                                                             Rounds:
-                                                            {workouts.rounds}
+                                                            {session.rounds}
                                                         </p>
                                                         <p>
-                                                            Reps:{workouts.reps}
+                                                            Reps:{session.reps}
                                                         </p>
                                                         <p>
                                                             Weight:
-                                                            {workouts.weight}
+                                                            {session.weight}
                                                         </p>
-                                                    </motion.div>
-                                                    <motion.div
-                                                    variants={animation} 
-                                                    className="button_container_workout_data_output">
-                                                        <motion.button
-                                                            value={wid}
-                                                            whileTap={{
-                                                                scale: 0.8,
-                                                            }}
-                                                            onClick={props.onClick}
-                                                            style={buttonStyle}
-                                                        >
-                                                            Update
-                                                        </motion.button>
                                                     </motion.div>
                                                 </React.Fragment>
                                             </motion.div>
-                                        );
+                                        )
                                     })}
                                 </div>
-                            );
+                            )
                         })}
                     </div>
-                );
+                )
             })}
-        </div>
-    );
-};
+        </motion.div>
+    )
+}
 
-export default CreateMonthTrainingObjects;
+export default GetAllWorkoutsCreateObjects;

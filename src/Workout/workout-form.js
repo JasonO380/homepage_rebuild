@@ -2,14 +2,15 @@ import React, { useState, useContext, useReducer } from "react";
 import { LoginRegisterContext } from "../Authenticate/login-register-context";
 import { formWrapper, formStyle, inputStyle, labelStyle } from "../CSS/variables/form_style";
 import { motion } from "framer-motion";
-import FormNav from "../Nav/form-nav";
+import PageNav from "../Nav/page-nav";
 import buttonStyle from "../CSS/variables/button_style";
-import Footer from "../Footer/footer";
+import LoadingSpinner from "../SharedComponents/LoadingSpinner";
 import { FaDumbbell } from "react-icons/fa";
 
 
 const WorkoutForm = (props) => {
     let id;
+    const [isLoading, setIsLoading] = useState(false)
     const inputReducer = (state, action) => {
         const dateEntry = new Date();
         switch (action.type) {
@@ -72,6 +73,7 @@ const WorkoutForm = (props) => {
             setIsValid(false);
             return null;
         }
+        setIsLoading(true);
         try {
             const response = await fetch(
                 "https://barbell-factor.onrender.com/api/workouts",
@@ -103,6 +105,7 @@ const WorkoutForm = (props) => {
         });
         setFormIsValid(true);
         event.preventDefault();
+        setIsLoading(false)
     };
 
     return (
@@ -116,7 +119,8 @@ const WorkoutForm = (props) => {
                 exit={{ x: window.innerWidth, transition: { duration: 0.35 } }}
                 style={formWrapper}
             >
-                <FormNav />
+                <PageNav />
+                {isLoading && <LoadingSpinner />}
                 <form style={formStyle}>
                     <h1>
                         <FaDumbbell icon="fa-duotone fa-user" />

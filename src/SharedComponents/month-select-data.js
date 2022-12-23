@@ -1,4 +1,7 @@
-const monthSelectData = [
+const months = [
+    {
+        month: "Select month",
+    },
     {
         month: "January",
     },
@@ -34,4 +37,4 @@ const monthSelectData = [
     },
 ];
 
-export default monthSelectData;
+export default months;

@@ -1,5 +1,6 @@
 .carousel_wrapper {
-    background: #1b0124;
+    /* background: #1b0124; */
+    background: black;
     width: 70%;
     border-radius: 10px;
     display: flex;

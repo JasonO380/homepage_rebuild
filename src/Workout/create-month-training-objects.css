@@ -3,7 +3,11 @@
     justify-content: center;
 }
 
-.workout_date_header {
+.workout_month_header {
+    text-align: center;
+}
+
+.workout_date_header_log {
     text-align: center;
 }
 
@@ -17,25 +21,39 @@
 
 
 @media screen and (min-width: 760px){
+    .workout_date_header {
+        text-align: left;
+        width: 100%;
+    }
+
     .workout_container {
         width: 100%;
     }
 
     .session_container {
         display: flex;
-        justify-content: center;
         flex-wrap: wrap;
         gap: 10px;
+        margin-left: 130px;
+        margin-top: 7px;
+    }
+
+    .session_container_log {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: center;
     }
 
     .movement_data_container {
-        flex: 1 1 32%;
+        flex: 0 32%;
     }
 
     .movement_data {
         margin-left: auto;
         margin-right: auto;
-        display: table;
+        /* display: table; */
         padding: 10px 30px;
     }
 
