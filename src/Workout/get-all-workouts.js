@@ -43,7 +43,7 @@ const GetAllWorkouts = (props) => {
 
     useEffect(()=> {
         fetchWorkouts();
-    }, [userID])
+    }, [])
 
     const getMonths = (session) => {
         let month;

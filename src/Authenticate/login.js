@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useContext } from "react";
+import React, { useState, useReducer, useContext, useEffect } from "react";
 import PageNav from "../Nav/page-nav";
 import LoadingSpinner from "../SharedComponents/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
@@ -8,9 +8,10 @@ import { LoginRegisterContext } from "./login-register-context";
 import { formStyle } from "../CSS/variables/form_style";
 import "./authenticate.css";
 
+let accessGranted;
 const Login = () => {
-    let accessGranted;
     const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState()
     const inputReducer = (state, action) => {
         switch (action.type) {
             case "INPUT_CHANGE":
@@ -23,6 +24,7 @@ const Login = () => {
         }
     };
     const navigate = useNavigate();
+    const [isValid, setIsValid] = useState(true);
     const [login, setLogin] = useState(true);
     const [inputState, dispatch] = useReducer(inputReducer, {
         email: "",
@@ -43,6 +45,11 @@ const Login = () => {
     };
 
     const loginUser = async (event) => {
+        if (!inputState.email || !inputState.password ) 
+        {
+            setIsValid(false);
+            return null;
+        }
         setIsLoading(true)
         event.preventDefault();
         const inputName = event.target.name;
@@ -65,13 +72,17 @@ const Login = () => {
             const responseData = await response.json();
             accessGranted = responseData.message;
             console.log(responseData.message);
+            console.log(accessGranted)
             loginRegister.login(responseData.userID, responseData.token);
         } catch (err) {
             console.log(err);
+            setLogin(false)
+            setErrorMessage(err.message)
         }
-
         if (accessGranted !== "Success") {
             setLogin(false);
+            setIsLoading(false)
+            console.log(login)
         } else {
             navigate("/dashboard");
             setIsLoading(false)
@@ -98,6 +109,7 @@ const Login = () => {
                 <input
                     className="login_register_input"
                     name="email"
+                    required
                     value={inputState.email}
                     placeholder="enter email"
                     onChange={changeHandler}
@@ -106,6 +118,7 @@ const Login = () => {
                 <input
                     className="login_register_input"
                     name="password"
+                    required
                     value={inputState.password}
                     placeholder="enter password"
                     onChange={changeHandler}
@@ -117,8 +130,16 @@ const Login = () => {
                 >
                     LOGIN
                 </button>
-                {!login && (<p>{accessGranted}</p>)}
+                {!isValid && (<p style={{color:"white"}}>Enter all fields</p>)}
             </form>
+            {!login && (
+                <motion.div
+                initial={{y:-300}}
+                style={{margin:'auto'}}
+                animate={{y:0,transition: { type: "spring", bounce: 0.65, duration: 0.8 }}}>
+                    <p style={{color:"white"}}>{accessGranted}</p>
+                </motion.div>
+                )}
         </motion.div>
     );
 };

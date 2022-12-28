@@ -24,29 +24,29 @@
 }
 
 .ball_1 {
-    width: 25px;
-    height: 25px;
+    width: 5px;
+    height: 5px;
     border-radius: 100%;
-    background: rgb(60, 180, 0);
+    background: #0000ffe0;
 }
 
 .ball_2 {
-    width: 25px;
-    height: 25px;
+    width: 5px;
+    height: 10px;
     border-radius: 100%;
     background: #ff1f06;
 }
 
 .ball_3 {
-    width: 25px;
-    height: 25px;
+    width: 5px;
+    height: 10px;
     border-radius: 100%;
-    background: rgba(9, 2, 222, 0.982);
+    background: #ff1f06;
 }
 
 .ball_4 {
-    width: 25px;
-    height: 25px;
+    width: 5px;
+    height: 5px;
     border-radius: 100%;
-    background: rgb(60, 180, 0);
+    background: #0000ffe0;
 }

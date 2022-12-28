@@ -8,8 +8,10 @@ import { formStyle } from "../CSS/variables/form_style";
 import LoadingSpinner from "../SharedComponents/LoadingSpinner";
 import "./authenticate.css";
 
+let accessGranted;
 const Register = () => {
     const [isLoading, setIsloading] = useState(false);
+    const [isValid, setIsValid] = useState(true)
     const inputReducer = (state, action) => {
         switch (action.type) {
             case "INPUT_CHANGE":
@@ -43,6 +45,14 @@ const Register = () => {
     };
 
     const registerUser = async (event) => {
+        if (
+            !inputState.username ||
+            !inputState.email ||
+            !inputState.password 
+        ) {
+            setIsValid(false);
+            return null;
+        }
         setIsloading(true)
         event.preventDefault();
         const inputName = event.target.name;
@@ -50,7 +60,7 @@ const Register = () => {
         console.log(inputName, inputValue, inputState);
         try {
             const response = await fetch(
-                "https://barbell-factor.herokuapp.com/api/users/signup",
+                "https://barbell-factor.onrender.com/api/users//signup",
                 {
                     method: "POST",
                     headers: {
@@ -65,8 +75,16 @@ const Register = () => {
             );
             const responseData = await response.json();
             console.log(responseData);
-            loginRegister.login(responseData.userID, responseData.token);
-            navigate("/dashboard");
+            accessGranted = responseData;
+            if(accessGranted !== "Success"){
+                console.log(accessGranted)
+                setLogin(false)
+            } else {
+                loginRegister.login(responseData.userID, responseData.token);
+                navigate("/dashboard");
+            }
+            // loginRegister.login(responseData.userID, responseData.token);
+            // navigate("/dashboard");
         } catch (err) {
             console.log(err);
         }
@@ -95,6 +113,7 @@ const Register = () => {
                 <input
                     className="login_register_input"
                     name="username"
+                    required
                     value={inputState.username}
                     placeholder="enter username"
                     onChange={changeHandler}
@@ -103,16 +122,18 @@ const Register = () => {
                 <input
                     className="login_register_input"
                     name="email"
+                    required
                     value={inputState.email}
-                    placeholder="enter email must contain @"
+                    placeholder="email must contain @"
                     onChange={changeHandler}
                 />
                 <label className="login_register_label">Password</label>
                 <input
                     className="login_register_input"
                     name="password"
+                    required
                     value={inputState.password}
-                    placeholder="enter password at least 6 characters"
+                    placeholder="minimum 6 characters"
                     onChange={changeHandler}
                 />
                 <button
@@ -122,7 +143,16 @@ const Register = () => {
                 >
                     REGISTER
                 </button>
+                {!isValid && (<p style={{color:"white"}}>Enter all fields</p>)}
             </form>
+            {!login && (
+                <motion.div
+                initial={{y:-300}}
+                style={{margin:'auto'}}
+                animate={{y:0,transition: { type: "spring", bounce: 0.65, duration: 0.8 }}}>
+                    <p style={{color:"white"}}>{accessGranted.message}</p>
+                </motion.div>
+                )}
         </motion.div>
     );
 };
